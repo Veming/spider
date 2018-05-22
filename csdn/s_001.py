@@ -2,6 +2,7 @@
 # function:  A spider for all links of CSDN. Getting all article title and created time 
 # create by :苏杭
 # util pakage: request 
+# 使用方法： 从端口号为6379的数据库中,使用lpop方法弹出健值为 title 和 time 的列表就可以得到一条数据
 from bs4 import BeautifulSoup
 from redis import StrictRedis
 import re
@@ -75,7 +76,9 @@ def spider():
         if len(title) == 0 or len(time) == 0 :
             continue
         data = "title : "+ title[0]+ "time : "+ time[0], "link : "+ link
-        redis.publish("redisChat",data)
+        # redis.publish("redisChat",data)
+        redis.rpush('title',title)
+        redis.rpush('time',time)
         print("title : ", title[0], "time : ", time[0], "link : ", link)
 
 
