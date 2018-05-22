@@ -2,7 +2,8 @@
 # function:  A spider for all links of CSDN. Getting all article title and created time 
 # create by :苏杭
 # util pakage: request 
-# 使用方法： 从端口号为6379的数据库中,使用lpop方法弹出健值为 title 和 time 的列表就可以得到一条数据
+# 使用方法： 从端口号为6379的数据库中,使用lpop方法弹出健值为 title 和 time 的列表就可以得到一条数据， title和time必须一起弹出才能对应上，否则会出现失序
+# 注意事项： 若从数据库客户端直接读数据的时候若出现乱码 请使用 redis-cli --raw 访问redis客户端
 from bs4 import BeautifulSoup
 from redis import StrictRedis
 import re
@@ -58,7 +59,7 @@ def getLinks(html,linkPool):
     
 
 def spider():
-    startURL = 'https://www.csdn.net'
+    startURL = 'https://www.csdn.net/nav/cloud'
     titleRule = '<h6 class="title-article">(.*?)</h6>'
     timeRule = '<span class="time">(.*?)</span>'
 
